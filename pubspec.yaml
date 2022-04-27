@@ -39,6 +39,9 @@ dependencies:
   crypto: ^3.0.1
   jwt_decoder: ^2.0.1
   shared_preferences: ^2.0.13
+  intl: ^0.17.0
+  flutter_localizations:
+    sdk: flutter
 
 dev_dependencies:
   flutter_test:

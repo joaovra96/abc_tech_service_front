@@ -17,14 +17,8 @@ class PerfilPage extends GetView<PerfilController> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 ListTile(
-                  title: Text("Nome: ${controller.operator}"),
-                  subtitle: Text("Operador ID: ${controller.operatorId}"),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    TextButton(onPressed: () {}, child: const Text("Alterar dados"))
-                  ],
+                  title: Obx(() => Text("Nome: ${controller.operator}")),
+                  subtitle: Obx(() => Text("Operador ID: ${controller.operatorId}")),
                 ),
               ],
             )
@@ -35,7 +29,7 @@ class PerfilPage extends GetView<PerfilController> {
           padding: EdgeInsets.zero,
           children: [
             UserAccountsDrawerHeader(
-              accountName: Text(controller.operator),
+              accountName: Obx(() => Text('${controller.operator}')),
               accountEmail: null,
               currentAccountPicture: ClipRRect(
                 borderRadius: BorderRadius.circular(110),

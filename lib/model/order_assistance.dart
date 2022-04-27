@@ -1,16 +1,15 @@
 import 'dart:convert';
 
 import 'package:abc_tech_service_front/model/assistance.dart';
-
-import 'order_location.dart';
+import 'package:abc_tech_service_front/model/order_location_response.dart';
 
 class OrderAssistance {
 
   String operatorName;
   String operatorRegistration;
   List<Assistance> services = [];
-  OrderLocation? start;
-  OrderLocation? end;
+  OrderLocationResponse? start;
+  OrderLocationResponse? end;
 
     OrderAssistance(
     {
@@ -28,8 +27,8 @@ class OrderAssistance {
       operatorName: map['operatorName'] ?? '', 
       operatorRegistration: map['operatorRegistration'] ?? '', 
       services: listServices ?? [], 
-      start: OrderLocation.fromMap(map['start'] ?? {}), 
-      end: OrderLocation.fromMap(map['end'] ?? {})
+      start: OrderLocationResponse.fromMap(map['start'] ?? {}), 
+      end: OrderLocationResponse.fromMap(map['end'] ?? {})
     );
   }
 

@@ -1,23 +1,25 @@
 import 'dart:convert';
 
+import 'package:intl/intl.dart';
 
-class OrderLocation {
+
+class OrderLocationResponse {
   double latitude;
   double longitude;
-  DateTime dateTime;
+  String dateTime;
 
-  OrderLocation({
+  OrderLocationResponse({
     required this.latitude,
     required this.longitude,
     required this.dateTime
   });
 
-  OrderLocation copyWith({
+  OrderLocationResponse copyWith({
     double? latitude,
     double? longitude,
-    DateTime? dateTime,
+    String? dateTime,
   }) {
-    return OrderLocation(
+    return OrderLocationResponse(
       latitude: latitude ?? this.latitude,
       longitude: longitude ?? this.longitude,
       dateTime: dateTime ?? this.dateTime,
@@ -28,30 +30,30 @@ class OrderLocation {
     return <String, dynamic>{
       'latitude': latitude,
       'longitude': longitude,
-      'dateTime': dateTime.toIso8601String()
+      'dateTime': dateTime
     };
   }
 
-  factory OrderLocation.fromMap(Map<String, dynamic> map) {
-    return OrderLocation(
+  factory OrderLocationResponse.fromMap(Map<String, dynamic> map) {
+    return OrderLocationResponse(
       latitude: map['latitude'] ?? 0.0,
       longitude: map['longitude'] ?? 0.0,
-      dateTime: DateTime.parse(map['dateTime']),
+      dateTime: map['dateTime'] != null ? DateFormat("dd/MM/yyyy hh:mm").format(DateTime.fromMillisecondsSinceEpoch(map['dateTime'])): '',
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory OrderLocation.fromJson(String source) => OrderLocation.fromMap(json.decode(source));
+  factory OrderLocationResponse.fromJson(String source) => OrderLocationResponse.fromMap(json.decode(source));
 
   @override
-  String toString() => 'OrderLocation(latitude: $latitude, longitude: $longitude, dateTime: $dateTime)';
+  String toString() => 'OrderLocationResponse(latitude: $latitude, longitude: $longitude, dateTime: $dateTime)';
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
   
-    return other is OrderLocation &&
+    return other is OrderLocationResponse &&
       other.latitude == latitude &&
       other.longitude == longitude &&
       other.dateTime == dateTime;

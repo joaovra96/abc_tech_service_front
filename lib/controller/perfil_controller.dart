@@ -5,13 +5,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class PerfilController extends GetxController with StateMixin<User> {
 
-  String operatorId = "";
-  String operator = "";
+  final operatorId = "".obs;
+  final operator = "".obs;
 
   @override
   void onInit() {
     super.onInit();
-    operator = Get.arguments;
+    operator.value = Get.arguments;
     _jwtDecode();
     change(null, status: RxStatus.success());
   }
@@ -22,7 +22,7 @@ class PerfilController extends GetxController with StateMixin<User> {
 
     Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
 
-    operatorId = decodedToken["sub"];
+    operatorId.value = decodedToken["sub"];
 
     bool isTokenExpired = JwtDecoder.isExpired(token);
 
