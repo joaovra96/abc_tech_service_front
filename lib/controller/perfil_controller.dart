@@ -6,10 +6,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 class PerfilController extends GetxController with StateMixin<User> {
 
   String operatorId = "";
+  String operator = "";
 
   @override
   void onInit() {
     super.onInit();
+    operator = Get.arguments;
     _jwtDecode();
     change(null, status: RxStatus.success());
   }
@@ -35,11 +37,10 @@ class PerfilController extends GetxController with StateMixin<User> {
   }
 
   goToServicesByOperator() {
-    Get.toNamed("/services_operator", arguments: operatorId);
+    Get.toNamed("/services_operator");
   }
 
   logout() {
-    operatorId = "";
     Get.toNamed("/");
   }
 

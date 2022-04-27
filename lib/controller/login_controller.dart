@@ -47,7 +47,7 @@ class LoginController extends GetxController with StateMixin<UserLogged> {
 
         clearForm();
 
-        Timer(const Duration(milliseconds: 1000), () => Get.toNamed("/perfil"));
+        Timer(const Duration(milliseconds: 1000), () => Get.toNamed("/perfil", arguments: value.operator));
       })
       .catchError((error) {
         Get.snackbar("Error", error.toString(), backgroundColor: Colors.redAccent);

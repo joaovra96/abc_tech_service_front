@@ -16,9 +16,9 @@ class PerfilPage extends GetView<PerfilController> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const ListTile(
-                  title: Text("Nome: Usuario fulano"),
-                  subtitle: Text("Operador ID: 123456789"),
+                ListTile(
+                  title: Text("Nome: ${controller.operator}"),
+                  subtitle: Text("Operador ID: ${controller.operatorId}"),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
@@ -34,11 +34,13 @@ class PerfilPage extends GetView<PerfilController> {
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
-            const DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.blue
+            UserAccountsDrawerHeader(
+              accountName: Text(controller.operator),
+              accountEmail: null,
+              currentAccountPicture: ClipRRect(
+                borderRadius: BorderRadius.circular(110),
+                child: Image.asset("assets/img/profile.png", fit: BoxFit.cover),
               ),
-              child: Text("Usuário Fulano")
             ),
             ListTile(
               title: const Text("Order"),
