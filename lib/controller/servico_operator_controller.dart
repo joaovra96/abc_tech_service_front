@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../model/order_assistance.dart';
 import '../services/order_assistance_service.dart';
 
 class ServicoOperatorController extends GetxController with StateMixin<List<OrderAssistance>> {
-
-  String _operatorId = "";
   late OrderAssistanceServiceInterface _orderAssistanceServiceInterface;
   List<OrderAssistance> assistsByOperator = [];
 
@@ -14,19 +14,40 @@ class ServicoOperatorController extends GetxController with StateMixin<List<Orde
   void onInit() {
     super.onInit();
     _orderAssistanceServiceInterface = Get.find<OrderAssistanceServiceInterface>();
-    _operatorId = Get.arguments;
-    getAssistancesByOperatorId(int.parse(_operatorId));
+    _jwtDecode();
     change(null, status: RxStatus.success());
   }
 
-  void getAssistancesByOperatorId(int operatorId) {
+    _jwtDecode() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var token = prefs.getString('token')!;
+
+    Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
+
+    var _operatorId = decodedToken["sub"];
+
+    bool isTokenExpired = JwtDecoder.isExpired(token);
+
+    if (isTokenExpired) {
+      prefs.clear();
+      Get.toNamed("/");
+      return;
+    }
+
+    getAssistancesByOperatorId(_operatorId);
+  }
+
+  void getAssistancesByOperatorId(String operatorId) {
+    change([], status: RxStatus.loading());
     _orderAssistanceServiceInterface
       .getAssistsByOperatorId(operatorId)
       .then((value) {
         assistsByOperator = value;
+        change(value, status: RxStatus.success());
       })
       .onError((error, stackTrace) {
         Get.snackbar("Error", error.toString(), backgroundColor: Colors.redAccent);
+        change([], status: RxStatus.error(error.toString()));
       });
   }
 

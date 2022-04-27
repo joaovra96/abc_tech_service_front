@@ -6,14 +6,16 @@ import 'order_location.dart';
 
 class OrderAssistance {
 
-  int operatorId;
+  String operatorName;
+  String operatorRegistration;
   List<Assistance> services = [];
   OrderLocation? start;
   OrderLocation? end;
 
     OrderAssistance(
     {
-      required this.operatorId,
+      required this.operatorName,
+      required this.operatorRegistration,
       required this.services,
       required this.start,
       required this.end
@@ -21,17 +23,20 @@ class OrderAssistance {
   );
 
   factory OrderAssistance.fromMap(Map<String, dynamic> map) {
+    var listServices = map['services'].map<Assistance>((item) => Assistance.fromMap(item)).toList();
     return OrderAssistance(
-      operatorId: map['operatorId'].toInt() ?? 0, 
-      services: map['services'] ?? [], 
-      start: map['start'] ?? 0.0, 
-      end: map['end'] ?? 0.0
+      operatorName: map['operatorName'] ?? '', 
+      operatorRegistration: map['operatorRegistration'] ?? '', 
+      services: listServices ?? [], 
+      start: OrderLocation.fromMap(map['start'] ?? {}), 
+      end: OrderLocation.fromMap(map['end'] ?? {})
     );
   }
 
     Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'operatorId': operatorId,
+      'operatorName': operatorName,
+      'operatorRegistration': operatorRegistration,
       'services': services,
       'start': start?.toMap(),
       'end': end?.toMap()

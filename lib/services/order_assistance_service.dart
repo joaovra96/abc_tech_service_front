@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import '../model/order_assistance.dart';
 
 abstract class OrderAssistanceServiceInterface {
-  Future<List<OrderAssistance>> getAssistsByOperatorId(int operatorId);
+  Future<List<OrderAssistance>> getAssistsByOperatorId(String operatorId);
   Future<OrderAssistanceServiceInterface> init(OrderAssistanceProviderInterface provider);
 }
 
@@ -14,7 +14,7 @@ class OrderAssistanceService extends GetxService implements OrderAssistanceServi
   late OrderAssistanceProviderInterface _orderAssistanceProviderInterface;
 
   @override
-  Future<List<OrderAssistance>> getAssistsByOperatorId(int operatorId) async {
+  Future<List<OrderAssistance>> getAssistsByOperatorId(String operatorId) async {
    Response response = await _orderAssistanceProviderInterface.getAssistsByOperatorId(operatorId);
 
    if (response.hasError) {

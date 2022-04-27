@@ -34,9 +34,9 @@ class OrderLocation {
 
   factory OrderLocation.fromMap(Map<String, dynamic> map) {
     return OrderLocation(
-      latitude: map['latitude'] as double,
-      longitude: map['longitude'] as double,
-      dateTime: DateTime.parse(map['dateTime']),
+      latitude: map['latitude'] ?? 0.0,
+      longitude: map['longitude'] ?? 0.0,
+      dateTime: map['dateTime'] != null ? DateTime.fromMicrosecondsSinceEpoch(map['dateTime']) : DateTime.now(),
     );
   }
 

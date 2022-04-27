@@ -1,6 +1,8 @@
 import 'package:abc_tech_service_front/model/assistance.dart';
 import 'package:abc_tech_service_front/services/assistance_service.dart';
 import 'package:get/get.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AssistanceController extends GetxController with StateMixin<List<Assistance>> {
 
@@ -11,9 +13,22 @@ class AssistanceController extends GetxController with StateMixin<List<Assistanc
   @override
   void onInit() {
     super.onInit();
+    _jwtDecode();
     _service = Get.find<AssistanceServiceInterface>();
     selectedAssists = Get.arguments;
     getAssistanceList();
+  }
+
+    _jwtDecode() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var token = prefs.getString('token')!;
+
+    bool isTokenExpired = JwtDecoder.isExpired(token);
+
+    if (isTokenExpired) {
+      prefs.clear();
+      Get.toNamed("/");
+    }
   }
 
   void getAssistanceList() {

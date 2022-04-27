@@ -1,4 +1,3 @@
-
 import 'package:abc_tech_service_front/controller/servico_operator_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -13,21 +12,27 @@ class ServicoOperatorPage extends GetView<ServicoOperatorController> {
       context: context,
       builder: (BuildContext context) {
         return Container(
-          height: 400,
+          height: 600,
           color: Colors.amber,
-          child: Center(
-            child: Column(
+          child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 25.0),
+                  padding: const EdgeInsets.only(bottom: 25.0, left: 20.0),
                   child: Column(
                     children: [
-                      Text(
-                        'Data: ' + item.services[0].name,
-                        style: const TextStyle(fontSize: 18.0)
-                      ),
+                      const Text("Inicio serviço: ", style: TextStyle(fontSize: 18.0)),
+                      Text('Data: ${item.start?.dateTime}'),
+                      Text('Latitude: ${item.start?.latitude}'),
+                      Text('Longitude: ${item.start?.longitude}'),
+                      const SizedBox(height: 32.0),
+                      const Text("Final serviço: ", style: TextStyle(fontSize: 18.0)),
+                      Text('Data Final: ${item.end?.dateTime}'),
+                      Text('Latitude: ${item.end?.latitude}'),
+                      Text('Longitude: ${item.end?.longitude}'),
+                      const SizedBox(height: 16.0),
+                      Row(children: const [ Text("Serviços efetuados: ") ]),
                       ListView.builder(
                         shrinkWrap: true,
                         itemCount: item.services.length,
@@ -42,20 +47,21 @@ class ServicoOperatorPage extends GetView<ServicoOperatorController> {
                 )
               ],
             ),
-          ),
         );
       },
     );
   }
 
   Widget renderListOrder(List<OrderAssistance> list) {
+    
     return ListView.builder(
       shrinkWrap: true,
       itemCount: list.length,
       itemBuilder: (context, index) {
         var dateStarted = list[index].start?.dateTime;
         return ListTile(
-          title: Text(dateStarted.toString()), 
+          title: Text('Data inicial do serviço: ${dateStarted.toString()}'),
+          subtitle: Text('Operador: ${list[index].operatorName}'),
           onTap: () => showModal(list[index], context)
         );
     });

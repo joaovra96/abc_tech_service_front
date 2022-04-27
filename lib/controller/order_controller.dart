@@ -4,6 +4,8 @@ import 'package:abc_tech_service_front/services/geolocation_service.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../model/order.dart';
 import '../model/order_created.dart';
@@ -26,8 +28,24 @@ class OrderController extends GetxController with StateMixin<OrderCreated> {
   void onInit() {
     super.onInit();
     _geolocationService.start();
-    operatorIdController.text = Get.arguments;
+    _jwtDecode();
     change(null, status: RxStatus.success());
+  }
+
+  _jwtDecode() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var token = prefs.getString('token')!;
+
+    Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
+
+    operatorIdController.text = decodedToken["sub"];
+
+    bool isTokenExpired = JwtDecoder.isExpired(token);
+
+    if (isTokenExpired) {
+      prefs.clear();
+      Get.toNamed("/");
+    }
   }
 
   Future<Position> _getLocation() async {

@@ -4,6 +4,7 @@ import 'package:abc_tech_service_front/model/user_logged.dart';
 import 'package:abc_tech_service_front/services/login_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../model/user_login.dart';
 
@@ -31,10 +32,9 @@ class LoginController extends GetxController with StateMixin<UserLogged> {
     }
 
     UserLogin user = UserLogin(registration: operatorIdController.text, password: senhaController.text);
-    var operatorIdValue = operatorIdController.text;
 
     _loginService.login(user)
-      .then((value) {
+      .then((value) async {
         Get.snackbar(
           "Sucesso", 
           "Login realizado com sucesso", 
@@ -42,9 +42,12 @@ class LoginController extends GetxController with StateMixin<UserLogged> {
           duration: const Duration(milliseconds: 1300)
         );
 
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.setString('token', value.token);
+
         clearForm();
 
-        Timer(const Duration(milliseconds: 1000), () => Get.toNamed("/perfil", arguments: operatorIdValue));
+        Timer(const Duration(milliseconds: 1000), () => Get.toNamed("/perfil"));
       })
       .catchError((error) {
         Get.snackbar("Error", error.toString(), backgroundColor: Colors.redAccent);

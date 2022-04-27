@@ -26,7 +26,7 @@ class LoginService extends GetxService implements LoginServiceInterface {
       
       UserLogged objResponse = UserLogged.fromMap(response.body);
 
-      return Future.sync(() => UserLogged(token: 'Bearer ${objResponse.token}'));
+      return Future.sync(() => UserLogged(token: objResponse.token));
     } catch (e) {
       e.printError();
       return Future.error(ErrorDescription("Erro não esperado"));
