@@ -1,4 +1,5 @@
 import 'package:abc_tech_service_front/controller/servico_operator_controller.dart';
+import 'package:abc_tech_service_front/model/order_location_response.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -6,6 +7,21 @@ import '../model/order_assistance.dart';
 
 class ServicoOperatorPage extends GetView<ServicoOperatorController> {
   const ServicoOperatorPage({Key? key}) : super(key: key);
+
+  _textModalEnd(OrderLocationResponse? end) {
+
+    if(end?.dateTime == '') {
+      return const Text("Serviço não finalizado");
+    }
+
+    return Column(
+      children: [
+        Text('Data Final: ${end?.dateTime}'),
+        Text('Latitude: ${end?.latitude}'),
+        Text('Longitude: ${end?.longitude}')
+      ],
+    );
+  }
 
   showModal(OrderAssistance item, BuildContext context) {
     showModalBottomSheet<void>(
@@ -28,9 +44,7 @@ class ServicoOperatorPage extends GetView<ServicoOperatorController> {
                       Text('Longitude: ${item.start?.longitude}'),
                       const SizedBox(height: 32.0),
                       const Text("Final serviço: ", style: TextStyle(fontSize: 18.0)),
-                      Text('Data Final: ${item.end?.dateTime}'),
-                      Text('Latitude: ${item.end?.latitude}'),
-                      Text('Longitude: ${item.end?.longitude}'),
+                      _textModalEnd(item.end),
                       const SizedBox(height: 16.0),
                       Row(children: const [ Text("Serviços efetuados: ") ]),
                       ListView.builder(
