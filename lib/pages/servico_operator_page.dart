@@ -100,9 +100,9 @@ class ServicoOperatorPage extends GetView<ServicoOperatorController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Order")),
+      appBar: AppBar(title: const Text("Serviços do operador")),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () => controller.getAssistancesByOperatorId(),
         child: const Icon(Icons.refresh, color: Colors.white),
       ),
       body: Container(

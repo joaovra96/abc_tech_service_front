@@ -9,6 +9,7 @@ import '../services/order_assistance_service.dart';
 class ServicoOperatorController extends GetxController with StateMixin<List<OrderAssistance>> {
   late OrderAssistanceServiceInterface _orderAssistanceServiceInterface;
   List<OrderAssistance> assistsByOperator = [];
+  String _operatorId = "";
 
   @override
   void onInit() {
@@ -24,7 +25,7 @@ class ServicoOperatorController extends GetxController with StateMixin<List<Orde
 
     Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
 
-    var _operatorId = decodedToken["sub"];
+    _operatorId = decodedToken["sub"];
 
     bool isTokenExpired = JwtDecoder.isExpired(token);
 
@@ -34,13 +35,13 @@ class ServicoOperatorController extends GetxController with StateMixin<List<Orde
       return;
     }
 
-    getAssistancesByOperatorId(_operatorId);
+    getAssistancesByOperatorId();
   }
 
-  void getAssistancesByOperatorId(String operatorId) {
+  void getAssistancesByOperatorId() {
     change([], status: RxStatus.loading());
     _orderAssistanceServiceInterface
-      .getAssistsByOperatorId(operatorId)
+      .getAssistsByOperatorId(_operatorId)
       .then((value) {
         assistsByOperator = value;
         change(value, status: RxStatus.success());
